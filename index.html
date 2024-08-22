@@ -95,8 +95,15 @@
             const downloadBtn = document.getElementById('download-btn');
             let width = 0;
 
-            const modId = 'sildrus'; // Установите нужный ID мода
-            const modLink = await getModLink(modId); // Получение ссылки
+            // Получение параметра 'link' из URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const modId = urlParams.get('link'); // Получение ID мода из параметра 'link'
+            if (!modId) {
+                timerMessage.textContent = 'Ошибка: ID мода не найден в параметре URL.';
+                return;
+            }
+
+            const modLink = await getModLink(modId); // Получение ссылки из JSON
 
             if (!modLink) {
                 timerMessage.textContent = 'Ошибка при получении ссылки. Попробуйте позже.';
@@ -126,6 +133,7 @@
     </script>
 </body>
 </html>
+
 
 
 
