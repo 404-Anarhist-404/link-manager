@@ -7,7 +7,7 @@ async function saveLink(id, url) {
     const links = await fetchLinks();
     links[id] = url;
 
-    // Убедитесь, что этот URL указывает на серверный скрипт для обновления JSON
+    // Обновление JSON-файла (для серверного сценария)
     await fetch('https://yourserver.com/update-links', {
         method: 'POST',
         headers: {
@@ -29,15 +29,15 @@ document.getElementById('linkForm').addEventListener('submit', async function(ev
         return;
     }
 
-    // Add the new link to the list
+    // Добавление новой ссылки в список
     const listItem = document.createElement('li');
     listItem.innerHTML = `<a href="${linkUrl}" target="_blank">${linkId}</a>`;
     linksList.appendChild(listItem);
 
-    // Save to JSON file
+    // Сохранение ссылки в JSON-файл
     await saveLink(linkId, linkUrl);
 
-    // Clear the form fields
+    // Очистка полей формы
     document.getElementById('linkId').value = '';
     document.getElementById('linkUrl').value = '';
 });
@@ -67,7 +67,7 @@ document.getElementById('download-btn').addEventListener('click', async function
             timer.style.display = 'none';
             timerMessage.style.display = 'none';
             downloadBtn.disabled = false;
-            // Pереход по уникальной ссылке
+            // Переход по уникальной ссылке
             setTimeout(() => {
                 window.location.href = linkUrl;
             }, 1000); // Задержка 1 секунда
@@ -78,4 +78,5 @@ document.getElementById('download-btn').addEventListener('click', async function
         }
     }, 50); // 5 секунд / 100 шагов = 50 миллисекунд на шаг
 });
+
 
