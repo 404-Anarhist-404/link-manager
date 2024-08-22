@@ -5,6 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Спасибо❤️</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Простейшие стили для таймера и кнопки */
+        .timer-container {
+            margin: 20px;
+        }
+        .timer {
+            width: 0;
+            height: 20px;
+            background: linear-gradient(90deg, rgba(255,105,180, 0), rgba(0,250,154, 0));
+            transition: width 0.05s linear;
+        }
+        .timer-message {
+            margin-top: 10px;
+        }
+        .download-btn {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        .download-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -45,11 +73,18 @@
     </footer>
 
     <script>
-        // Функция для получения ссылки из JSON-файла на GitHub
         async function getModLink(modId) {
-            const response = await fetch('https://404-anarhist-404.github.io/link-manager/links.json');
-            const data = await response.json();
-            return data[modId];
+            try {
+                const response = await fetch('https://raw.githubusercontent.com/ваш-пользователь/ваш-репозиторий/main/links.json');
+                if (!response.ok) {
+                    throw new Error('Сеть ответила с ошибкой.');
+                }
+                const data = await response.json();
+                return data[modId];
+            } catch (error) {
+                console.error('Ошибка получения ссылки:', error);
+                return null;
+            }
         }
 
         async function startTimer(event) {
@@ -59,8 +94,13 @@
             const downloadBtn = document.getElementById('download-btn');
             let width = 0;
 
-            const modId = 'sildurs'; // Установите нужный ID мода
+            const modId = 'sildrus'; // Установите нужный ID мода
             const modLink = await getModLink(modId); // Получение ссылки
+
+            if (!modLink) {
+                timerMessage.textContent = 'Ошибка при получении ссылки. Попробуйте позже.';
+                return;
+            }
 
             downloadBtn.disabled = true;
 
@@ -68,9 +108,13 @@
                 if (width >= 100) {
                     clearInterval(interval);
                     timer.style.display = 'none';
-                    timerMessage.textContent = 'Теперь вы можете перейти по ссылке.';
+                    timerMessage.textContent = 'Вы можете перейти по ссылке.';
                     downloadBtn.disabled = false;
                     downloadBtn.href = modLink; // Установка ссылки
+                    // Автоматическое перенаправление через 1 секунду
+                    setTimeout(() => {
+                        window.location.href = modLink;
+                    }, 1000); // 1 секунда задержки
                 } else {
                     width++;
                     timer.style.width = width + '%';
@@ -81,3 +125,5 @@
     </script>
 </body>
 </html>
+
+
