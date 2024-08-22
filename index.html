@@ -76,27 +76,43 @@
         <ul id="linksList"></ul>
     </div>
 
-    <script>
-        const links = {};
+<script>
+    async function getUniqueLink(modId) {
+        const response = await fetch('links.json'); // Путь к вашему JSON-файлу
+        const links = await response.json();
+        return links[modId];
+    }
 
-        document.getElementById('linkForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const url = document.getElementById('linkUrl').value;
-            const name = 'link' + Math.random().toString(36).substr(2, 9);
-            links[name] = url;
-            updateLinksList();
-            document.getElementById('linkUrl').value = '';
-        });
+    async function startTimer(event) {
+        event.preventDefault(); // Предотвращение перехода по ссылке до завершения таймера
+        const timer = document.getElementById('timer');
+        const timerMessage = document.getElementById('timer-message');
+        const downloadBtn = document.getElementById('download-btn');
+        let width = 0;
 
-        function updateLinksList() {
-            const list = document.getElementById('linksList');
-            list.innerHTML = '';
-            for (let name in links) {
-                const li = document.createElement('li');
-                li.innerHTML = `<a href="redirect.html?link=${name}" target="_blank">${name}</a>`;
-                list.appendChild(li);
+        const modId = 'links1gpgxkgv'; // Установите нужный ID мода
+        const uniqueLink = await getUniqueLink(modId); // Получение уникальной ссылки
+
+        downloadBtn.disabled = true;
+
+        const interval = setInterval(() => {
+            if (width >= 100) {
+                clearInterval(interval);
+                timer.style.display = 'none';
+                timerMessage.style.display = 'none';
+                downloadBtn.disabled = false;
+                // Переход по уникальной ссылке
+                setTimeout(() => {
+                    window.location.href = uniqueLink;
+                }, 1000); // Задержка 1 секунда
+            } else {
+                width++;
+                timer.style.width = width + '%';
+                timer.style.background = `linear-gradient(90deg, rgba(255,105,180, ${width / 100}), rgba(0,250,154, ${width / 100}))`;
             }
-        }
-    </script>
+        }, 50); // 5 секунд / 100 шагов = 50 миллисекунд на шаг
+    }
+</script>
+
 </body>
 </html>
