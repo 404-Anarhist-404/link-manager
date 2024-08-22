@@ -68,51 +68,48 @@
     <div class="container">
         <h1>Link Manager</h1>
         <form id="linkForm">
+            <input type="text" id="linkId" placeholder="Enter the ID for the link" required>
             <input type="url" id="linkUrl" placeholder="Enter the URL" required>
-            <button type="submit">Generate Short Link</button>
+            <button type="submit">Add Link</button>
         </form>
 
         <h2>Your Short Links</h2>
         <ul id="linksList"></ul>
     </div>
 
-<script>
-    async function getUniqueLink(modId) {
-        const response = await fetch('links.json'); // Путь к вашему JSON-файлу
-        const links = await response.json();
-        return links[modId];
-    }
+    <script>
+        document.getElementById('linkForm').addEventListener('submit', function(event) {
+            event.preventDefault();
 
-    async function startTimer(event) {
-        event.preventDefault(); // Предотвращение перехода по ссылке до завершения таймера
-        const timer = document.getElementById('timer');
-        const timerMessage = document.getElementById('timer-message');
-        const downloadBtn = document.getElementById('download-btn');
-        let width = 0;
+            const linkId = document.getElementById('linkId').value;
+            const linkUrl = document.getElementById('linkUrl').value;
+            const linksList = document.getElementById('linksList');
 
-        const modId = 'links1gpgxkgv'; // Установите нужный ID мода
-        const uniqueLink = await getUniqueLink(modId); // Получение уникальной ссылки
+            // Add the new link to the list
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `<a href="${linkUrl}" target="_blank">${linkId}</a>`;
+            linksList.appendChild(listItem);
 
-        downloadBtn.disabled = true;
+            // Save to local storage (mocking the backend save)
+            let links = JSON.parse(localStorage.getItem('links')) || {};
+            links[linkId] = linkUrl;
+            localStorage.setItem('links', JSON.stringify(links));
 
-        const interval = setInterval(() => {
-            if (width >= 100) {
-                clearInterval(interval);
-                timer.style.display = 'none';
-                timerMessage.style.display = 'none';
-                downloadBtn.disabled = false;
-                // Переход по уникальной ссылке
-                setTimeout(() => {
-                    window.location.href = uniqueLink;
-                }, 1000); // Задержка 1 секунда
-            } else {
-                width++;
-                timer.style.width = width + '%';
-                timer.style.background = `linear-gradient(90deg, rgba(255,105,180, ${width / 100}), rgba(0,250,154, ${width / 100}))`;
+            // Clear the form fields
+            document.getElementById('linkId').value = '';
+            document.getElementById('linkUrl').value = '';
+        });
+
+        // Load saved links
+        window.onload = function() {
+            const links = JSON.parse(localStorage.getItem('links')) || {};
+            const linksList = document.getElementById('linksList');
+            for (const [id, url] of Object.entries(links)) {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `<a href="${url}" target="_blank">${id}</a>`;
+                linksList.appendChild(listItem);
             }
-        }, 50); // 5 секунд / 100 шагов = 50 миллисекунд на шаг
-    }
-</script>
-
+        };
+    </script>
 </body>
 </html>
