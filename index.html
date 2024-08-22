@@ -4,21 +4,123 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Link Manager</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input[type="text"], input[type="url"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 10px;
+            background: #f9f9f9;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        li a {
+            color: #333;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>Link Manager</h1>
         <form id="linkForm">
-            <input type="text" id="linkId" placeholder="Enter the ID for the link" required>
+            <input type="text" id="linkId" placeholder="Enter the ID" required>
             <input type="url" id="linkUrl" placeholder="Enter the URL" required>
-            <button type="submit">Add Link</button>
+            <button type="submit">Generate Short Link</button>
         </form>
 
         <h2>Your Short Links</h2>
         <ul id="linksList"></ul>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        async function fetchLinks() {
+            const response = await fetch('links.json');
+            return await response.json();
+        }
+
+        async function saveLink(id, url) {
+            const links = await fetchLinks();
+            links[id] = url;
+
+            // Обновление JSON-файла (замени URL на путь к серверу, если используешь сервер)
+            await fetch('update-links.json', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(links),
+            });
+        }
+
+        document.getElementById('linkForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const linkId = document.getElementById('linkId').value.trim();
+            const linkUrl = document.getElementById('linkUrl').value.trim();
+            const linksList = document.getElementById('linksList');
+
+            if (!linkId || !linkUrl) {
+                alert('Please provide both ID and URL.');
+                return;
+            }
+
+            // Добавление новой ссылки в список
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `<a href="${linkUrl}" target="_blank">${linkId}</a>`;
+            linksList.appendChild(listItem);
+
+            // Сохранение ссылки в JSON-файл
+            await saveLink(linkId, linkUrl);
+
+            // Очистка полей формы
+            document.getElementById('linkId').value = '';
+            document.getElementById('linkUrl').value = '';
+        });
+    </script>
 </body>
 </html>
