@@ -1,1 +1,181 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #000; /* Основной черный фон */
+    color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Убираем отступы у header, a, и banner */
+header {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 0; /* Убираем отступы */
+    display: flex;
+    justify-content: center;
+}
+
+.banner-link {
+    display: block;
+    width: 100%;
+    max-width: 468px;
+    margin: 10px; /* Убираем отступы */
+}
+
+.banner {
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 0; /* Убираем отступы */
+}
+
+.banner img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+/* Перегородка */
+.divider {
+    border: none;
+    height: 2px; /* Толщина линии */
+    background: linear-gradient(90deg, #ff69b4, #00fa9a); /* Градиент: неоновый розовый и мятный */
+    margin: 0; /* Убираем отступы */
+    border-radius: 2px;
+}
+
+
+main {
+    flex: 1;
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+
+.content {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+    width: 100%;
+    max-width: 500px; /* Ширина контентного блока */
+    position: relative;
+}
+
+.support-message {
+    font-size: 26px; /* Увеличенный размер текста */
+    color: #fff; /* Белый цвет текста */
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(255, 20, 147, 0.8); /* Неоновое розовое свечение */
+}
+
+.timer-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.timer {
+    height: 15px;
+    width: 0;
+    background: linear-gradient(90deg, #ff69b4, #00fa9a); /* Градиент: неоновый розовый и мятный */
+    border-radius: 10px;
+    position: relative;
+    margin-bottom: 20px; /* Расстояние между таймером и кнопкой */
+    transition: width 0.05s linear;
+}
+
+.timer-message {
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(255, 20, 147, 0.8); /* Неоновое розовое свечение */
+}
+
+.download-btn {
+    display: inline-block;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    background: linear-gradient(45deg, #ff0080, #00fa9a); /* Градиентный фон кнопки: розовый и мятный */
+    color: #fff;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background 0.3s, transform 0.3s;
+    position: relative;
+}
+
+.download-btn:hover {
+    background: linear-gradient(45deg, #00fa9a, #ff0080); /* Инвертирование градиента при наведении */
+    transform: scale(1.05);
+}
+
+.download-btn:disabled {
+    background: #666;
+    cursor: not-allowed;
+}
+
+footer {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px 0;
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid #444;
+}
+
+.social-links {
+    display: flex;
+    gap: 20px;
+}
+
+.social-icon img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+/* Адаптивность */
+
+@media (max-width: 768px) {
+    .banner img {
+        max-width: 100%;
+    }
+
+    .download-btn {
+        padding: 12px 24px;
+        font-size: 16px;
+    }
+
+    .support-message {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 480px) {
+    .download-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+
+    .support-message {
+        font-size: 20px;
+    }
+
+    .social-icon img {
+        width: 25px;
+        height: 25px;
+    }
+}
 
