@@ -75,7 +75,8 @@
     <script>
         async function getModLink(modId) {
             try {
-                const response = await fetch('https://raw.githubusercontent.com/ваш-пользователь/ваш-репозиторий/main/links.json');
+                // Путь к вашему JSON-файлу на GitHub Pages
+                const response = await fetch('https://404-anarhist-404.github.io/link-manager/links.json');
                 if (!response.ok) {
                     throw new Error('Сеть ответила с ошибкой.');
                 }
@@ -125,5 +126,6 @@
     </script>
 </body>
 </html>
+
 
 
